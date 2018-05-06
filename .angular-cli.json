@@ -9,7 +9,8 @@
       "outDir": "dist",
       "assets": [
         "assets",
-        "favicon.ico"
+        "favicon.ico",
+        "manifest.json"
       ],
       "index": "index.html",
       "main": "main.ts",
@@ -19,7 +20,14 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "styles.css"
+        "styles.css",
+        "theme.scss",
+        "jam/styles/jam-styles.css",
+        "jam/styles/jam-layout-styles.css",
+        "jam/styles/jam-animation-styles.css",
+        "jam/styles/jam-makeover-styles.css",
+        "jam/styles/jam-feature-styles.css",
+        "jam/styles/jam-material-makeover-styles.css"
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",

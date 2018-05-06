@@ -1,0 +1,88 @@
+<div class="component stretch flex-vertical">
+
+	<header class="stretch-horizontally flex flex-center-center flex-grow-shrink"
+		bgColor="accent">
+
+		<div class="title flex-grow flex-center-center">
+			JamSalon App
+		</div>
+
+		<div class="profile">
+			<div *ngIf="( user | async ); then signedInTemplate; else guestTemplate"></div>
+			<ng-template #signedInTemplate>
+				<button mat-button
+					class="sign-out-button"
+					(click)="signOut()">
+					SIGN OUT
+				</button>
+			</ng-template>
+			<ng-template #guestTemplate>
+				<button mat-button
+					class="sign-in-button"
+					(click)="goto( pages.signIn )">
+					SIGN IN
+				</button>
+			</ng-template>
+		</div>
+
+	</header>
+
+	<main class="stretch-horizontally flex-grow-shrink">
+
+		<!-- <span *ngIf="( user | async ) as userSnapshot; then signedInContentTemplate; else guestContentTemplate"> </span> -->
+
+		<!-- <ng-template #signedInContentTemplate> -->
+
+		<section class="welcome-section flex-vertical flex-center-center">
+			<div class="welcome-prompt-text xxx-large-text"> Meet the #1 Software for Salons and Spas </div>
+			<!-- <div *ngIf="( user | async )?.displayName" class="x-large-text"> Welcome {{ ( user | async )?.displayName }}! </div> -->
+			<div class="welcome-actions">
+				<span *ngIf="( company | async ); then serviceActiveTemplate; else serviceInactiveTemplate"> </span>
+				<ng-template #serviceActiveTemplate>
+					<button mat-raised-button color="primary"
+						class="goto-console-button"
+						(click)="goto( pages.dashboard )">
+						Go to Console
+					</button>
+				</ng-template>
+				<ng-template #serviceInactiveTemplate>
+					<button mat-raised-button color="primary"
+						class="activate-service-button"
+						(click)="create()">
+						Activate Service
+					</button>
+				</ng-template>
+			</div>
+		</section>
+
+		<section class="feature-section flex-vertical flex-center-center">
+			<!-- <mat-grid-list class="feature-grid"
+				cols="2"
+				rowHeight="150px"
+				gutterSize="30px">
+
+				<mat-grid-tile *ngFor="let feature of features">
+					<div>
+						<h1 class="feature-title"> {{ feature.title }} </h1>
+						<p class="feature-description"> {{ feature.description }} </p>
+					</div>
+				</mat-grid-tile>
+
+			</mat-grid-list> -->
+			<div class="feature-grid flex">
+				<div class="feature-tile" *ngFor="let feature of features">
+					<div class="feature">
+						<h1 class="feature-title"> {{ feature.title }} </h1>
+						<p class="feature-description"> {{ feature.description }} </p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+	</main>
+
+	<footer class="flex-no-shrink" bgColor="primary">
+
+	</footer>
+
+</div>

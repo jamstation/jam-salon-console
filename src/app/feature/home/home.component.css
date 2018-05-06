@@ -1,0 +1,97 @@
+:host {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.component > header {
+	box-sizing: border-box;
+	padding: 50px;
+	flex-basis: 300px;
+	color: white;
+}
+
+.profile {
+	align-self: flex-start;
+}
+
+.sign-in-button, .sign-out-button {
+	color: white;
+}
+
+.title {
+	font-family: 'Rajdhani';
+	font-size: 32px;
+}
+
+.component > main {
+	box-sizing: border-box;
+	padding: 50px;
+}
+
+.welcome-prompt-text {
+	margin-top: 50px;
+}
+
+.activate-service-button {
+	margin-top: 20px;
+}
+
+.feature-grid {
+	flex-wrap: wrap;
+	margin-top: 20px;
+	width: 90%;
+	max-width: 1500px;
+}
+
+.feature-tile {
+	margin-top: 50px;
+	margin-left: 50px;
+	width: 300px;
+}
+
+.feature {
+	padding: 10px 30px;
+	height: 100%;
+	background: antiquewhite;
+}
+
+.feature-description {
+	text-align: justify;
+}
+
+.company-button {
+	min-width: 200px;
+	height: 200px;
+	box-shadow: 6px 6px 40px 0px rgba( 0, 0, 0, 0.1 ) !important;
+}
+
+.guest-content {
+	min-height: 400px;
+}
+
+.guest-content-actions {
+	margin-top: 30px;
+}
+
+.guest-content-register-button {
+	margin-left: 30px;
+}
+
+.component > footer {
+	flex-basis: 100px;
+}
+
+@media ( max-width: 576px ) {
+
+	.title {
+		font-size: 18px;
+	}
+
+	.component > footer {
+		flex-basis: 50px;
+	}
+
+}

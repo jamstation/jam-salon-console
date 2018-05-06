@@ -1,0 +1,35 @@
+<jam-window title="Service"
+	titleIcon="build">
+
+	<div header-template class="flex flex-start-center">
+		<button mat-raised-button
+			color="accent"
+			(click)="create()">
+			<mat-icon> add </mat-icon>
+			<span> Add Service </span>
+		</button>
+	</div>
+
+	<div content-template
+		class="content stretch-horizontally flex-vertical flex-start-center">
+
+		<mat-list class="service-list stretch-horizontally">
+			<mat-list-item *ngFor="let service of ( list | async )"
+				class="service-list-item"
+				[class.last-modified-item-animation]="lastModifiedItem && service.key == lastModifiedItem.key"
+				(click)="edit( service )">
+				<h4 mat-line> {{ service.name }} </h4>
+				<button mat-icon-button class="remove-button"
+					(click)="remove( service ); $event.stopPropagation();">
+					<mat-icon mat-list-icon> delete </mat-icon>
+				</button>
+			</mat-list-item>
+		</mat-list>
+
+	</div>
+
+	<div footer-template
+		class="footer stretch-horizontally">
+	</div>
+
+</jam-window>

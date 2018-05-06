@@ -1,0 +1,60 @@
+button.round-button {
+	border-radius: 50%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	/* margin: 0; */
+	font-weight: 500;
+}
+
+.xx-small-text {
+	font-size: xx-small;
+}
+
+.x-small-text {
+	font-size: x-small;
+}
+
+.small-text {
+	font-size: small;
+}
+
+.large-text {
+	font-size: large;
+}
+
+.x-large-text {
+	font-size: x-large;
+}
+
+.xx-large-text {
+	font-size: xx-large;
+}
+
+.xxx-large-text {
+	font-size: 36px;
+}
+
+.jumbo-text {
+	font-size: 64px;
+}
+
+.giant-text {
+	font-size: 92px;
+}
+
+bold {
+	font-weight: bold;
+}
+
+italic {
+	font-style: italic;
+}
+
+*[bgColor="translucent"] {
+	background-color: rgba( 255, 255, 255, 0.5 );
+}
+
+invert-color {
+	color: white;
+}
