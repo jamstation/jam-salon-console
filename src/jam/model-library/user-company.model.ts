@@ -1,11 +1,10 @@
 import { TableData } from './table-data.model';
-import { UserRoles } from './user-role.enum';
+import { UserRoles } from './user-roles.enum';
 import { KeyValue } from './key-value.model';
 import { FirestoreAccess } from './firestore-access.model';
 
-export interface UserApp extends TableData
+export interface UserCompany extends TableData
 {
-	companyKey: string;
 	role: UserRoles;
 	accesses?: KeyValue<FirestoreAccess>;
 }

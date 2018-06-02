@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, first, withLatestFrom } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
@@ -33,7 +33,9 @@ export class ServiceFormComponent
 				this.creating = creating;
 				this.formItem = formItem;
 				this.form = this.formBuilder.group( {
-					name: [ this.formItem.name ],
+					name: [ this.formItem.name, Validators.required ],
+					price: [ this.formItem.price ],
+					duration: [ this.formItem.duration, Validators.required ]
 				} );
 			} )
 
@@ -43,7 +45,9 @@ export class ServiceFormComponent
 	{
 		this.formItem = {
 			...this.formItem,
-			name: this.form.get( 'name' ).value
+			name: this.form.get( 'name' ).value,
+			price: this.form.get( 'price' ).value,
+			duration: this.form.get( 'duration' ).value
 		};
 		this.creating
 			? this.store.dispatch( new ServiceAction.Add( this.formItem ) )

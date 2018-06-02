@@ -9,8 +9,16 @@
 mat-expansion-panel {
 	z-index: 100;
 	position: fixed;
-	background-color: rgb( 247, 250, 255 );
+	background-color: transparent;
 	border-radius: 0px;
+}
+
+mat-expansion-panel:hover {
+	background-color: rgb( 247, 250, 255 );
+}
+
+.toolbarOpen {
+	background-color: rgb( 247, 250, 255 );
 }
 
 mat-expansion-panel-header {

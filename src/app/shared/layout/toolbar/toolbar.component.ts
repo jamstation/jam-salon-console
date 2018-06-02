@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { ScreenSizes } from '../../../../jam/model-library';
 import { User, AuthAction } from '../../../../jam/auth';
@@ -24,7 +24,7 @@ export class ToolbarComponent
 	constructor ( private store: Store<AppModuleState> )
 	{
 		this.screenSize = this.store.pipe( select( state => state.jamLayoutState.screenSize ) );
-		this.companyTitle = Observable.of( 'Jam Salon Console' );
+		this.companyTitle = of( 'Jam Salon Console' );
 		this.user = this.store.pipe( select( state => state.authState.user ) );
 	}
 

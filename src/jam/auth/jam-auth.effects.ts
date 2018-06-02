@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
 import { map, switchMap, withLatestFrom, filter, tap, first, catchError } from 'rxjs/operators';
 import { Action, Store, select } from '@ngrx/store';
 import { Effect, Actions, ofType } from "@ngrx/effects";
@@ -37,7 +37,6 @@ export class AuthEffects
 
 		this.initialize = this.actions.pipe(
 			ofType<AuthAction.Initialize>( AuthActionTypes.initialize ),
-			// .map( action => ( { email: 'amsakanna@gmail.com' } ) ),
 			switchMap( action => this.angularFireAuth.authState ),
 			map( firebaseUser => firebaseUser ? ( {
 				key: firebaseUser.uid,
@@ -58,7 +57,7 @@ export class AuthEffects
 				first(),
 				map( initialized => action ) ) ),
 			withLatestFrom( this.store.pipe( select( state => state.authState.userTableName ) ) ),
-			switchMap( ( [ action, userTableName ] ) => action.user ? db.forceLookup<User>( userTableName, action.user ) : Observable.of<User>( null ) ),
+			switchMap( ( [ action, userTableName ] ) => action.user ? db.forceLookup<User>( userTableName, action.user ) : of<User>( null ) ),
 			map( user => new AuthAction.LoadedUser( user ) )
 		);
 
@@ -84,10 +83,10 @@ export class AuthEffects
 		this.register = this.actions.pipe(
 			ofType<AuthAction.Register>( AuthActionTypes.register ),
 			switchMap( action => this.angularFireAuth.auth.createUserWithEmailAndPassword( action.credential.email, action.credential.password ) ),
-			catchError( ( error: FirebaseError ) => Observable.of( error ) ),
-			map( ( error: FirebaseError ) => !error.code
-				? new AuthAction.Registered()
-				: new AuthAction.RegisterFailed( error ) ) );
+			catchError( ( error: FirebaseError ) => of( { ...error, isError: true } ) ),
+			map( data => data && data.isError
+				? new AuthAction.RegisterFailed( data )
+				: new AuthAction.Registered() ) );
 
 		this.registered = this.actions.pipe(
 			ofType<AuthAction.Registered>( AuthActionTypes.registered ),
@@ -97,10 +96,10 @@ export class AuthEffects
 		this.signIn = this.actions.pipe(
 			ofType<AuthAction.SignIn>( AuthActionTypes.signIn ),
 			switchMap( action => this.angularFireAuth.auth.signInWithEmailAndPassword( action.credential.email, action.credential.password ) ),
-			catchError( ( error: FirebaseError ) => Observable.of( error ) ),
-			map( ( error: FirebaseError ) => !error
-				? new AuthAction.SignedIn()
-				: new AuthAction.SignInFailed( error ) ) );
+			catchError( ( error: FirebaseError ) => of( { ...error, isError: true } ) ),
+			map( data => data && data.isError
+				? new AuthAction.SignInFailed( data )
+				: new AuthAction.SignedIn() ) );
 
 		this.signedIn = this.actions.pipe(
 			ofType<AuthAction.SignedIn>( AuthActionTypes.signedIn ),
@@ -110,9 +109,10 @@ export class AuthEffects
 		this.signOut = this.actions.pipe(
 			ofType<AuthAction.SignOut>( AuthActionTypes.signOut ),
 			switchMap( action => this.angularFireAuth.auth.signOut() ),
-			map( ( error: FirebaseError ) => !error
-				? new AuthAction.SignedOut()
-				: new AuthAction.SignOutFailed( error ) ) );
+			catchError( ( error: FirebaseError ) => of( { ...error, isError: true } ) ),
+			map( data => data && data.isError
+				? new AuthAction.SignOutFailed( data )
+				: new AuthAction.SignedOut() ) );
 
 		this.signedOut = this.actions.pipe(
 			ofType<AuthAction.SignedOut>( AuthActionTypes.signedOut ),

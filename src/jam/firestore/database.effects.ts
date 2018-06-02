@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map, switchMap, first, tap, withLatestFrom } from 'rxjs/operators';
 import { AngularFirestore } from "angularfire2/firestore";
 import { Action } from '@ngrx/store';
@@ -28,21 +28,23 @@ export class DatabaseEffects
 			ofType<DatabaseAction.Initialize>( DatabaseActionTypes.initialize ),
 			tap( action => firestore.firestore.app.firestore().settings( { timestampsInSnapshots: true } ) ),
 			switchMap( action => action.database
-				? Observable.of( action.database )
+				? of( action.database )
 				: this.firestore.doc<Database>( action.metadataPath ).valueChanges().pipe(
 					first(),
 					switchMap( database => this.db.list<Table>( concatPaths( '/', database.tableMetadataPath ) ).pipe(
 						first(),
+						map( tables => tables.map( table => ( {
+							key: table.key,
+							path: table.path.startsWith( '/' )
+								? table.path
+								: concatPaths( database.path, table.path )
+						} ) ) ),
+						map( tables => tables.map( table => ( { ...table, originalPath: table.path } ) ) ),
 						map( tables => ( {
 							path: database.path,
 							metadataPath: action.metadataPath,
 							tableMetadataPath: database.tableMetadataPath,
-							tables: tables.map( table => ( {
-								key: table.key,
-								path: table.path.startsWith( '/' )
-									? table.path
-									: concatPaths( database.path, table.path )
-							} ) )
+							tables: tables
 						} ) ) ) ) ) ),
 			map( ( database: Database ) => database
 				? new DatabaseAction.Initialized( database )

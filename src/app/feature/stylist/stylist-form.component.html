@@ -1,0 +1,61 @@
+<div class="container">
+
+	<form [formGroup]="form" novalidate
+		class="form stretch"
+		(ngSubmit)="submit()">
+
+		<div mat-dialog-title class="title flex-start-center">
+			{{ creating ? 'Create Stylist' : 'Edit Stylist' }}
+		</div>
+
+		<mat-dialog-content>
+
+			<div class="form-row">
+				<div class="form-label"> Name </div>
+				<div class="form-element">
+					<mat-form-field class="name">
+						<input matInput
+						class="html-form-element"
+							formControlName="name" />
+						</mat-form-field>
+				</div>
+			</div>
+
+			<div class="form-row">
+				<div class="form-label service-list-label"> Specialist in </div>
+				<div class="form-element service-list-element">
+					<div class="service-list stretch flex flex-center-center">
+						<mat-selection-list class="stretch-horizontally">
+							<mat-list-option *ngFor="let service of ( serviceList | async )"
+								[value]="service">
+								{{ service.name }}
+							</mat-list-option>
+						</mat-selection-list>
+					</div>
+				</div>
+			</div>
+
+		</mat-dialog-content>
+
+		<mat-dialog-actions align="end">
+
+			<button mat-button
+				class="cancel-button"
+				color="primary"
+				type="button"
+				(click)="cancel()">
+				Cancel
+			</button>
+			<button mat-raised-button
+				class="save-button"
+				color="primary"
+				type="submit"
+				[disabled]="form.invalid">
+				Save
+			</button>
+
+		</mat-dialog-actions>
+
+	</form>
+
+</div>

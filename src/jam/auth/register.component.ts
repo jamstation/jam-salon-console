@@ -16,9 +16,9 @@ import { Credential } from './credential.model';
 export class RegisterComponent
 {
 
-	private form: FormGroup;
-	private uiWidth: Observable<string>;
-	private uiHeight: Observable<string>;
+	public form: FormGroup;
+	public uiWidth: Observable<string>;
+	public uiHeight: Observable<string>;
 
 	constructor ( private store: Store<AuthModuleState>, private formBuilder: FormBuilder )
 	{
@@ -44,17 +44,17 @@ export class RegisterComponent
 		this.store.dispatch( new AuthAction.RequestSignInPage() );
 	}
 
-	private get email (): AbstractControl
+	public get email (): AbstractControl
 	{
 		return this.form.get( 'email' );
 	}
 
-	private get password (): AbstractControl
+	public get password (): AbstractControl
 	{
 		return this.form.get( 'password' );
 	}
 
-	private get confirmPassword (): AbstractControl
+	public get confirmPassword (): AbstractControl
 	{
 		return this.form.get( 'confirmPassword' );
 	}

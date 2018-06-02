@@ -1,4 +1,4 @@
-import { Observable } from "rxjs";
+import { Observable, from } from "rxjs";
 
 export function readImage ( file: File ): Observable<HTMLImageElement>
 {
@@ -8,5 +8,5 @@ export function readImage ( file: File ): Observable<HTMLImageElement>
 		image.onload = ( event: any ) => resolve( image );
 		image.src = URL.createObjectURL( file );
 	} );
-	return Observable.fromPromise( filePromise );
+	return from( filePromise );
 }

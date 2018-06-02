@@ -34,6 +34,17 @@ jam-window {
 	color: #F44336;
 }
 
+.service-price {
+	margin-top: 5px !important;
+	color: lightseagreen;
+}
+
+.service-duration {
+	padding: 5px;
+	background-color: antiquewhite;
+	color: darkgoldenrod;
+}
+
 .last-modified-item-animation {
 	animation-name: last-modified-item-animation;
 	animation-duration: 2s;
@@ -47,7 +58,12 @@ jam-window {
 }
 
 .footer {
-	height: 50px;
+	min-height: 50px;
+}
+
+.add-button {
+	right: 30px;
+	bottom: 30px;
 }
 
 @media ( max-width: 576px ) {

@@ -8,47 +8,39 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .xx-small-text {
-	font-size: xx-small;
+	font-size: xx-small !important;
 }
 
 .x-small-text {
-	font-size: x-small;
+	font-size: x-small !important;
 }
 
 .small-text {
-	font-size: small;
+	font-size: small !important;
 }
 
 .large-text {
-	font-size: large;
+	font-size: large !important;
 }
 
 .x-large-text {
-	font-size: x-large;
+	font-size: x-large !important;
 }
 
 .xx-large-text {
-	font-size: xx-large;
+	font-size: xx-large !important;
 }
 
 .xxx-large-text {
-	font-size: 36px;
+	font-size: 36px !important;
 }
 
 .jumbo-text {
-	font-size: 64px;
+	font-size: 64px !important;
 }
 
 .giant-text {
-	font-size: 92px;
-}
-
-bold {
-	font-weight: bold;
-}
-
-italic {
-	font-style: italic;
+	font-size: 92px !important;
 }
 
 *[bgColor="translucent"] {

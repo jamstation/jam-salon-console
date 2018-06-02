@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { map, first, share } from 'rxjs/operators';
+import { ScreenSizes, MatGridData, Company } from '../../../jam/model-library';
+import { User, AuthAction } from '../../../jam/auth';
+import { DatabaseAction } from '../../../jam/firestore';
 import { NavigatorAction } from '../../../jam/navigator';
 import { Pages } from '../../shared/model';
 import { HomeModuleState } from './home.store';
 import { HomeAction } from './home.actions';
-import { DatabaseAction } from '../../../jam/firestore';
-import { UserApp, ScreenSizes, MatGridData } from '../../../jam/model-library';
-import { map, first } from 'rxjs/operators';
-import { User, AuthAction } from '../../../jam/auth';
 
 @Component( {
 	selector: 'app-home',
@@ -20,13 +20,12 @@ export class HomeComponent
 
 	public pages = Pages;
 	public user: Observable<User>;
-	public company: Observable<UserApp>;
+	public company: Observable<Company>;
 	public features: { title: string, description: string }[];
 
 	constructor ( private store: Store<HomeModuleState> )
 	{
-		console.log( 'home constructor' );
-		this.user = this.store.pipe( select( state => state.authState.user ) );
+		this.user = this.store.pipe( select( state => state.authState.user ), share() );
 		this.company = this.store.pipe( select( state => state.homeState.company ) );
 		this.store.dispatch( new HomeAction.Load() );
 

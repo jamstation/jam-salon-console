@@ -1,9 +1,9 @@
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
 import { merge, skip } from "rxjs/operators";
 
 export function mergeObservables<T>( observables: Observable<T>[] ): Observable<T>
 {
-	return Observable.of( null ).pipe(
+	return of( null ).pipe(
 		merge( ...observables ),
 		skip( 1 )
 	);

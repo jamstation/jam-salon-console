@@ -1,4 +1,4 @@
-import { UserApp } from "../../../jam/model-library";
+import { Company, JamError } from "../../../jam/model-library";
 import { AppModuleState } from "../../app.store";
 
 export interface HomeModuleState extends AppModuleState
@@ -10,5 +10,6 @@ export interface HomeState
 {
 	processing: boolean;
 	creating: boolean;
-	company: UserApp;
+	company: Company;
+	lastError: JamError;
 }

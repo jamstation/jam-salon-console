@@ -83,14 +83,8 @@ $custom-theme: mat-light-theme( $custom-theme-primary, $custom-theme-accent, $cu
 $custom-typography: mat-typography-config(
   $font-family: 'Roboto, monospace',
   $headline: mat-typography-level(24px, 32px, 700),
-  $body-1: mat-typography-level(13px, 16px, 500)
+  $body-1: mat-typography-level(13px, 15px, 500)
 );
-
-// Override typography CSS classes (e.g., mat-h1, mat-display-1, mat-typography, etc.).
-@include mat-base-typography($custom-typography);
-
-// Override typography for a specific Angular Material components.
-@include mat-checkbox-typography($custom-typography);
 
 // Override typography for all Angular Material, including mat-base-typography and all components.
 @include angular-material-typography($custom-typography);

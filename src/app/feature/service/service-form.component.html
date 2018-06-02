@@ -11,13 +11,36 @@
 		<mat-dialog-content>
 
 			<div class="form-row">
+				<div class="form-label"> Service Name </div>
 				<div class="form-element">
-					<mat-form-field class="name"
-						floatLabel="never">
+					<mat-form-field class="name">
+						<input matInput
+						class="html-form-element"
+						formControlName="name" />
+					</mat-form-field>
+				</div>
+			</div>
+
+			<div class="form-row">
+				<div class="form-label"> Price </div>
+				<div class="form-element">
+					<mat-form-field class="price">
+						<input matInput
+						class="html-form-element"
+						formControlName="price"
+						type="number" />
+					</mat-form-field>
+				</div>
+			</div>
+
+			<div class="form-row">
+				<div class="form-label"> Avg. Duration </div>
+				<div class="form-element">
+					<mat-form-field class="duration">
 						<input matInput
 							class="html-form-element"
-							placeholder="Service name"
-							formControlName="name" />
+							formControlName="duration"
+							type="number" />
 					</mat-form-field>
 				</div>
 			</div>
@@ -36,7 +59,8 @@
 			<button mat-raised-button
 				class="save-button"
 				color="primary"
-				type="submit">
+				type="submit"
+				[disabled]="form.invalid">
 				Save
 			</button>
 

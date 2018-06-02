@@ -5,6 +5,7 @@ export function sortStringList<T>(
 	caseSensitive: boolean = true
 ): T[]
 {
+	list = list || [];
 	return list.sort( ( item1, item2 ) =>
 	{
 		let value1: string = item1[ key ] ? item1[ key ].toString() as string : '';

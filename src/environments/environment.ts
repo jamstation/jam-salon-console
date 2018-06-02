@@ -27,7 +27,8 @@ export const database = {
 export const storeDevtoolsConfig = {
 	name: 'Jam Salon',
 	maxAge: 25,
-	logOnly: true
+	logOnly: true,
+	// serialize: true
 };
 
 export const app = {

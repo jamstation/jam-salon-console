@@ -223,3 +223,11 @@
 .fit-content {
 	width: fit-content;
 }
+
+.relative {
+	position: relative !important;
+}
+
+.absolute {
+	position: absolute !important;
+}

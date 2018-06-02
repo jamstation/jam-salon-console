@@ -2,10 +2,6 @@
 	display: flex !important;
 }
 
-mat-dialog-content {
-	margin-top: 10px;
-}
-
 .form-row {
 	margin-top: 20px;
 	display: flex;

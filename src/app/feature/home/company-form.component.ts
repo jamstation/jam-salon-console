@@ -24,20 +24,8 @@ export class CompanyFormComponent
 		this.formItem = {
 			key: null,
 			name: null,
-			userKey: null,
 			subscription: null
 		}
-
-		this.store.pipe(
-			select( state => state.authState.user ),
-			first()
-		).subscribe( user =>
-		{
-			this.formItem = {
-				...this.formItem,
-				userKey: user.key,
-			}
-		} );
 
 		this.form = this.formBuilder.group( {
 			name: [ this.formItem.name, Validators.required ]
@@ -48,7 +36,6 @@ export class CompanyFormComponent
 	public submit (): void
 	{
 		this.formItem.name = this.form.get( 'name' ).value;
-		this.formItem.key = this.formItem.name.replace( /\s+/, '-' ).toLocaleLowerCase();
 		this.store.dispatch( new HomeAction.Add( this.formItem ) );
 	}
 

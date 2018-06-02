@@ -1,6 +1,7 @@
 <div [class.overlay]="toolbarOpen" (click)="toolbarOpen = false"></div>
 <mat-expansion-panel
 	class="floating-box stretch-horizontally"
+	[ngClass]="{ 'toolbarOpen': toolbarOpen }"
 	color="primary"
 	hideToggle="true"
 	[expanded]="toolbarOpen"
@@ -18,11 +19,6 @@
 					class="menu-button">
 					<mat-icon> {{ toolbarOpen ? 'close' : 'menu' }} </mat-icon>
 				</button>
-				<button mat-icon-button
-					class="home-button"
-					(click)="goto( pages.home )">
-					<mat-icon [class.grow-animation]="toolbarOpen"> home </mat-icon>
-				</button>
 			</section>
 
 			<section class="title-section">
@@ -35,8 +31,7 @@
 				<ng-template #signedInTemplate>
 					<div class="flex-vertical flex-center-center">
 						<button mat-icon-button [color]="toolbarOpen ? 'primary' : null"
-							class="profile-button"
-							(click)="goto( pages.profile )">
+							class="profile-button">
 							<mat-icon [class.grow-animation]="toolbarOpen"> account_circle </mat-icon>
 						</button>
 						<div *ngIf="toolbarOpen" color="primary" class="small-text"> Profile </div>
@@ -61,6 +56,7 @@
 		<div class="nav-link" (click)="goto( pages.dashboard )"> Dashboard </div>
 		<div class="nav-link" (click)="goto( pages.queue )"> Queue </div>
 		<div class="nav-link" (click)="goto( pages.service )"> Services </div>
+		<div class="nav-link" (click)="goto( pages.stylist )"> Stylists </div>
 		<div class="nav-link" (click)="goto( pages.settings )"> Settings </div>
 	</div>
 

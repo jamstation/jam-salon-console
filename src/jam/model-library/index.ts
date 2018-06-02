@@ -16,5 +16,5 @@ export * from './screen-sizes.enum';
 export * from './uploadable-file.model';
 export * from './upload-statuses.enum';
 export * from './upload-info.model';
-export * from './user-app.model';
-export * from './user-role.enum';
+export * from './user-company.model';
+export * from './user-roles.enum';

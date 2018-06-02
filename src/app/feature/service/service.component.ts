@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Store, select } from '@ngrx/store';
 import { Service } from '../../shared/model';
 import { ServiceModuleState, ServiceAction } from './service.store';
-import { Subscription } from 'rxjs/Subscription';
 
 @Component( {
 	selector: 'app-service',

@@ -26,13 +26,7 @@ export class AppComponent
 		 */
 		this.store.dispatch( new NavigatorAction.Initialize( Pages ) );
 
-		this.store.dispatch( new DatabaseAction.Initialize(
-			database.config.metadataPath,
-			[ {
-				key: 'App',
-				value: app.name
-			} ]
-		) );
+		this.store.dispatch( new DatabaseAction.Initialize( database.config.metadataPath ) );
 
 		this.store.dispatch( new NotificationAction.Initialize(
 			notificationConfig.defaultMessage,

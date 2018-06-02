@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { Observable, of, from } from "rxjs";
 import { first, map, switchMap, tap } from "rxjs/operators";
 import { Table } from "./table.model";
 import { AngularFirestore, AngularFirestoreCollection, QueryFn } from "angularfire2/firestore";
@@ -32,14 +32,14 @@ export class DatabaseService
     {
         return tableName.startsWith( '/' )
             ? tableName.replace( /(\/\/+)/g, '/' )
-            : ( this.tables.find( item => item.key == tableName ) || { key: null, path: null } ).path;
+            : ( this.tables.find( item => item.key === tableName ) || { path: null } ).path;
     }
 
     public getCollection<T extends TableData>( tableName: string, queryFn?: QueryFn ): AngularFirestoreCollection<T>
     {
         const path = this.getTablePathSnapshot( tableName );
 
-        console.log( '[Database]', '(Table: ' + path + ')', getCaller().functionName );
+        console.log( '[Database]', '(Table: ' + path + ')', getCaller() );
 
         return this.isValidPath( path )
             ? this.firestore.collection<T>( path, queryFn )
@@ -48,9 +48,9 @@ export class DatabaseService
 
     public exists<T extends TableData>( tableName: string, key: string ): Observable<boolean>
     {
-        if ( !key ) return Observable.of<boolean>( null );
+        if ( !key ) return of<boolean>( null );
         const collection = this.getCollection<T>( tableName );
-        if ( !collection ) return Observable.of<boolean>( null );
+        if ( !collection ) return of<boolean>( null );
 
         return collection.doc<T>( key ).snapshotChanges().pipe(
             first(),
@@ -59,23 +59,23 @@ export class DatabaseService
 
     public get<T extends TableData>( tableName: string, key: string ): Observable<T>
     {
-        if ( !key ) return Observable.of<T>( null );
+        if ( !key ) return of<T>( null );
         const collection = this.getCollection<T>( tableName );
-        if ( !collection ) return Observable.of<T>( null );
+        if ( !collection ) return of<T>( null );
 
         return collection.doc<T>( key ).snapshotChanges().pipe( mapFirestoreSnapshotToValue<T>() );
     }
 
     public find<T extends TableData>( tableName: string, searchColumn: keyof T, searchKey: any ): Observable<T>
     {
-        if ( !searchColumn || searchKey === undefined ) return Observable.of<T>( null );
+        if ( !searchColumn || searchKey === undefined ) return of<T>( null );
 
         return this.filter<T>( tableName, searchColumn, '==', searchKey ).map( list => list[ 0 ] || null );
     }
 
     public lookup<T extends TableData>( tableName: string, searchColumn: keyof T, searchKey: any ): Observable<T>
     {
-        if ( searchKey === undefined ) return Observable.of<T>( null );
+        if ( searchKey === undefined ) return of<T>( null );
 
         return searchColumn
             ? this.find<T>( tableName, searchColumn, searchKey ).pipe( first() )
@@ -86,7 +86,7 @@ export class DatabaseService
     {
         return this.lookup<T>( tableName, searchColumn, searchKey ).pipe(
             switchMap( lookedupItem => lookedupItem
-                ? Observable.of( lookedupItem )
+                ? of( lookedupItem )
                 : this.add( tableName, item ).pipe(
                     switchMap( key => this.lookup<T>( tableName, undefined, key ) ) ) ) );
     }
@@ -94,7 +94,7 @@ export class DatabaseService
     public list<T extends TableData>( tableName: string ): Observable<T[]>
     {
         const collection = this.getCollection<T>( tableName );
-        if ( !collection ) return Observable.of<T[]>( null );
+        if ( !collection ) return of<T[]>( null );
 
         return collection.snapshotChanges().pipe( mapFirestoreSnapshotsToValues() );
     }
@@ -102,7 +102,7 @@ export class DatabaseService
     public query<T extends TableData>( tableName: string, queryFn: QueryFn ): Observable<T[]>
     {
         const collection = this.getCollection<T>( tableName, queryFn );
-        if ( !collection ) return Observable.of<T[]>( null );
+        if ( !collection ) return of<T[]>( null );
 
         return collection.snapshotChanges().pipe( mapFirestoreSnapshotsToValues() );
     }
@@ -136,44 +136,47 @@ export class DatabaseService
         return this.list<T>( targetTableName ).pipe(
             map( list => list.length > 0 ),
             switchMap( targetExists => targetExists && !replace
-                ? Observable.of( false )
+                ? of( false )
                 : this.list<S>( sourceTableName ).pipe(
                     map( sourceList => sourceList.reduce( ( result: WriteBatch, item ) =>
                         result.set( targetCollection.doc<T>( item.key ).ref, item ),
                         this.firestore.firestore.batch() ) ),
-                    switchMap( ( batch: WriteBatch ) => Observable.fromPromise( batch.commit() ).pipe(
+                    switchMap( ( batch: WriteBatch ) => from( batch.commit() ).pipe(
                         map( () => true ) ) ) ) ) );
     }
 
     /**
-     * Remove view model columns.
+     * Remove view model columns and key column.
      * A column is a view model column if
-     *  - it has a counterpart key column
      *  - it ends with $
+     *  - it has a counterpart key column
+     *  - it has a counterpart key list column
      * @param item item for which the view model columns are to be removed
      */
     private removeVmColumns<T>( item: T, removeNulls: boolean = false ): Partial<T>
     {
         return filterObject( item, ( value, column, data ) =>
-            !( column.endsWith( '$' ) )
-            && ( column !== 'key' )
+            ( column !== 'key' )
+            && !( column.endsWith( '$' ) )
             && ( data[ column + 'Key' ] === undefined )
-            && ( data[ column.slice( 0, column.length - 1 ) + 'Keys' ] === undefined )
+            && ( !column.endsWith( 'List' )
+                || ( column.endsWith( 'List' )
+                    && data[ column.slice( 0, column.length - 4 ) + 'KeyList' ] === undefined ) )
             && ( removeNulls ? value !== null : true )
         );
     }
 
     public add<T extends TableData>( tableName: string, item: T ): Observable<string>
     {
-        if ( !item ) return Observable.of<string>( null );
+        if ( !item ) return of<string>( null );
         const collection = this.getCollection<T>( tableName );
-        if ( !collection ) return Observable.of<string>( null );
+        if ( !collection ) return of<string>( null );
 
         const promise: Promise<DocumentReference | void> = item.key
             ? collection.doc<T>( item.key ).set( this.removeVmColumns( item ) as T )
             : collection.add( this.removeVmColumns( item ) as T );
 
-        return Observable.fromPromise( promise ).pipe(
+        return from( promise ).pipe(
             map( docRef => docRef ? docRef.id : item.key ) );
     }
 
@@ -182,32 +185,32 @@ export class DatabaseService
         return concatObservablesToArray( items.map( item => this.add<T>( tableName, item ) ) );
     }
 
-    public updateElseInsertMany<T extends TableData>( tableName: string, items: T[], searchColumn?: keyof T ): Observable<string[]>
+    public modifyElseAddMany<T extends TableData>( tableName: string, items: T[], searchColumn?: keyof T ): Observable<string[]>
     {
         return concatObservablesToArray( items.map( item =>
-            this.updateElseInsert( tableName, item, searchColumn, item[ searchColumn ] ) ) );
+            this.modifyElseAdd( tableName, item, searchColumn, item[ searchColumn ] ) ) );
     }
 
     public modify<T extends TableData>( tableName: string, item: T, searchColumn?: keyof T, searchKey: any = item.key ): Observable<string>
     {
-        if ( !item ) return Observable.of<string>( null );
+        if ( !item ) return of<string>( null );
         const collection = this.getCollection<T>( tableName );
-        if ( !collection ) return Observable.of<string>( null );
+        if ( !collection ) return of<string>( null );
 
         return this.lookup<T>( tableName, searchColumn, searchKey ).pipe(
             switchMap( existingItem => !existingItem
-                ? Observable.of<string>( null )
-                : Observable.fromPromise( collection.doc( existingItem.key )
+                ? of<string>( null )
+                : from( collection.doc( existingItem.key )
                     .set( this.removeVmColumns( item ) ) ).pipe(
                         map( () => existingItem.key ) ) ) );
 
     }
 
-    public updateElseInsert<T extends TableData>( tableName: string, item: T, searchColumn?: keyof T, searchKey: any = item.key ): Observable<string>
+    public modifyElseAdd<T extends TableData>( tableName: string, item: T, searchColumn?: keyof T, searchKey: any = item.key ): Observable<string>
     {
         return this.modify( tableName, item, searchKey, searchColumn ).pipe(
             switchMap( updatedItem => updatedItem
-                ? Observable.of( updatedItem )
+                ? of( updatedItem )
                 : this.add( tableName, item ) ) );
     }
 
@@ -216,7 +219,7 @@ export class DatabaseService
         /**
          * if no item provided return immediately
          */
-        if ( !item ) return Observable.of<T>( null );
+        if ( !item ) return of<T>( null );
 
         /**
          * Remove view model columns
@@ -231,22 +234,22 @@ export class DatabaseService
 
     public modifyFields<T extends TableData>( tableName: string, item: T, searchColumn?: keyof T, searchKey: any = item.key ): Observable<string>
     {
-        if ( !item ) return Observable.of<string>( null );
+        if ( !item ) return of<string>( null );
         const collection = this.getCollection<T>( tableName );
-        if ( !collection ) return Observable.of<string>( null );
+        if ( !collection ) return of<string>( null );
 
         return this.lookup<T>( tableName, searchColumn, searchKey ).pipe(
             switchMap( existingItem => !existingItem
-                ? Observable.of<string>( null )
-                : Observable.fromPromise( collection.doc<T>( existingItem.key ).update( this.removeVmColumns( item, true ) ) ).pipe(
+                ? of<string>( null )
+                : from( collection.doc<T>( existingItem.key ).update( this.removeVmColumns( item, true ) ) ).pipe(
                     map( () => existingItem.key ) ) ) );
     }
 
     public modifyFieldsMany<T extends TableData>( tableName: string, items: T[], searchColumn?: keyof T ): Observable<string[]>
     {
-        if ( !items ) return Observable.of<string[]>( null );
+        if ( !items ) return of<string[]>( null );
         const collection = this.getCollection<T>( tableName );
-        if ( !collection ) return Observable.of<string[]>( null );
+        if ( !collection ) return of<string[]>( null );
 
         const existingItemsObservables = items.map( item =>
             this.validateAndFetchExistingItem( tableName, item, searchColumn, item[ searchColumn ] ) );
@@ -261,15 +264,15 @@ export class DatabaseService
                     .reduce( ( batch: WriteBatch, item ) => batch.update( collection.doc( item.key ).ref, item )
                         , this.firestore.firestore.batch() )
             } ) ),
-            switchMap( result => Observable.fromPromise( result.batch.commit() ).pipe(
+            switchMap( result => from( result.batch.commit() ).pipe(
                 map( () => result.newList.map( item => item.key ) ) ) ) );
     }
 
     public remove<T extends TableData>( tableName: string, key: string ): Observable<T>
     {
-        if ( !key ) return Observable.of<T>( null );
+        if ( !key ) return of<T>( null );
         const collection = this.getCollection<T>( tableName );
-        if ( !collection ) return Observable.of<T>( null );
+        if ( !collection ) return of<T>( null );
 
         /**
          * Get existing item
@@ -278,9 +281,9 @@ export class DatabaseService
         return this.lookup<T>( tableName, undefined, key ).pipe(
             switchMap( existingItem => !existingItem
                 /* Delete failed since existing item not found. Return 'null' to indicate 'no item deleted' */
-                ? Observable.of<T>( null )
+                ? of<T>( null )
                 /* Delete succeeded. Return existingItem as itemDeleted */
-                : Observable.fromPromise( collection.doc( existingItem.key ).delete() ).pipe(
+                : from( collection.doc( existingItem.key ).delete() ).pipe(
                     map( () => existingItem ) ) ) );
 
     }

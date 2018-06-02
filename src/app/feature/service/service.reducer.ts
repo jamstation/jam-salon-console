@@ -33,7 +33,7 @@ export function ServiceReducer ( state = initialState, action: ServiceAction.All
 			return {
 				...state,
 				creating: true,
-				formItem: { key: null, name: null }
+				formItem: { key: null, name: null, price: 0, duration: 0 }
 			};
 
 		case ServiceActionTypes.cancelCreate:

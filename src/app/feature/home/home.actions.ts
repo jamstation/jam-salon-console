@@ -1,6 +1,5 @@
 import { Action } from '@ngrx/store';
-import { UserApp } from '../../../jam/model-library';
-import { Company } from '../../../jam/model-library';
+import { Company, JamError } from '../../../jam/model-library';
 
 export const enum HomeActionTypes
 {
@@ -26,13 +25,13 @@ export namespace HomeAction
 	export class LoadSuccess implements Action
 	{
 		public readonly type = HomeActionTypes.loadSuccess;
-		constructor ( public item: UserApp ) { }
+		constructor ( public item: Company ) { }
 	}
 
 	export class LoadFailed implements Action
 	{
 		public readonly type = HomeActionTypes.loadFailed;
-		constructor () { }
+		constructor ( public error: JamError ) { }
 	}
 
 	export class Create implements Action

@@ -4,7 +4,8 @@ import { HomeActionTypes, HomeAction } from './home.actions';
 const initialState: HomeState = {
 	processing: false,
 	creating: false,
-	company: null
+	company: null,
+	lastError: null
 }
 
 export function HomeReducer ( state = initialState, action: HomeAction.All ): HomeState
@@ -22,7 +23,7 @@ export function HomeReducer ( state = initialState, action: HomeAction.All ): Ho
 			}
 
 		case HomeActionTypes.loadFailed:
-			return { ...state, processing: false }
+			return { ...state, processing: false, lastError: action.error }
 
 		case HomeActionTypes.create:
 			return { ...state, creating: true }

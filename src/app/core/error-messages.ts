@@ -1,6 +1,7 @@
 const errorMessages = [
 	{ code: 'auth/user-not-found', message: 'User not found. Please register.' },
-	{ code: 'auth/email-already-in-use', message: 'Email already exists.' }
+	{ code: 'auth/email-already-in-use', message: 'Email already exists.' },
+	{ code: 'auth/wrong-password', message: 'Wrong password entered. Please try again.' }
 ]
 
 const defaultErrorMessage = { message: 'Something went wrong. Please try again later.' };

@@ -1,12 +1,11 @@
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { Observable, BehaviorSubject } from "rxjs";
 import { map, merge, withLatestFrom, filter, skip, toArray, tap, concat } from "rxjs/operators";
 import { AngularFireStorage, AngularFireUploadTask, AngularFireStorageReference } from 'angularfire2/storage';
 import { UploadableFile, UploadStatuses } from "../../jam/model-library";
 import { average, mergeObservables } from "../../jam/function-library";
 import { JamFirestoreBatchUploadTask } from "./jam-firestore-batch-upload-task.model";
 import { JamFirestoreUploadTask } from "./jam-firestore-upload-task.model";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { UploadMetadata } from "@firebase/storage-types";
 import { JamFirestoreUploadFile } from "./jam-firestore-upload-file.model";
 

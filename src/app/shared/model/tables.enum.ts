@@ -1,8 +1,9 @@
 export enum Tables
 {
 	User = 'User',
-	UserApp = 'UserApp',
+	UserCompany = 'UserCompany',
 	Company = 'Company',
 	Service = 'Service',
-	Queue = 'Queue'
+	Stylist = 'Stylist',
+	CheckIn = 'CheckIn'
 }

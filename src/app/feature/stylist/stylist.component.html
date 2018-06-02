@@ -1,0 +1,39 @@
+<jam-window title="Stylists"
+	titleIcon="face">
+
+	<div content-template
+		class="content stretch-horizontally flex-vertical flex-start-center">
+
+		<mat-list class="stylist-list stretch-horizontally">
+			<mat-list-item *ngFor="let stylist of ( list | async )"
+				class="stylist-list-item"
+				(click)="edit( stylist )">
+				<div matListAvatar class="stylist-avatar flex-vertical flex-center-center">
+					<mat-icon class="stylist-photo large-icon"> face </mat-icon>
+				</div>
+				<h4 mat-line> {{ stylist.name }} </h4>
+				<div class="stylist-service-list">
+					<div *ngFor="let service of stylist.serviceList"
+						class="stylist-service-list-item x-small-text">
+						{{ service.name }}
+					</div>
+				</div>
+				<button mat-icon-button class="remove-button"
+					(click)="remove( stylist ); $event.stopPropagation();">
+					<mat-icon mat-list-icon> delete </mat-icon>
+				</button>
+			</mat-list-item>
+		</mat-list>
+
+	</div>
+
+	<div footer-template
+		class="footer stretch-horizontally">
+		<button mat-fab
+			class="add-button absolute"
+			(click)="create()">
+			<mat-icon> add </mat-icon>
+		</button>
+	</div>
+
+</jam-window>
