@@ -35,7 +35,7 @@ export function StylistReducer ( state = initialState, action: StylistAction.All
 			return {
 				...state,
 				creating: true,
-				formItem: { key: null, name: null }
+				formItem: { key: null, name: null, serviceList: [] }
 			};
 
 		case StylistActionTypes.cancelCreate:

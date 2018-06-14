@@ -10,7 +10,11 @@ import
 	MatInputModule,
 	MatSelectModule,
 	MatDialogModule,
-	MatExpansionModule
+	MatExpansionModule,
+	MatStepperModule,
+	MatDatepickerModule,
+	MatNativeDateModule,
+	MatMenuModule,
 } from '@angular/material';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -22,6 +26,7 @@ import { CheckInReducer } from './check-in.reducer';
 import { CheckInEffects } from './check-in.effects';
 import { CheckInComponent } from './check-in.component';
 import { CheckInFormComponent } from './check-in-form.component';
+import { ExistsPipeModule } from '../../../jam/pipe-library';
 
 @NgModule( {
 	declarations: [ CheckInComponent, CheckInFormComponent ],
@@ -35,10 +40,15 @@ import { CheckInFormComponent } from './check-in-form.component';
 		MatListModule,
 		MatDialogModule,
 		MatExpansionModule,
+		MatStepperModule,
+		MatDatepickerModule,
+		MatNativeDateModule,
+		MatMenuModule,
 		RouterModule.forChild( routes ),
 		StoreModule.forFeature( 'checkInState', CheckInReducer ),
 		EffectsModule.forFeature( [ CheckInEffects ] ),
-		JamWindowModule
+		JamWindowModule,
+		ExistsPipeModule
 	],
 	entryComponents: [ CheckInFormComponent ]
 } )

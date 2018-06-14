@@ -43,24 +43,28 @@ mat-toolbar.mat-toolbar-no-padding {
 	padding: 0px;
 }
 
-button.mat-button.small-button {
+button.mat-button.small-button,
+button.mat-raised-button.small-button {
     font-size: 11px;
     line-height: 11px;
 	padding: 5px 8px;
 	min-width: 60px;
 }
 
-button.mat-button.compact-button {
+button.mat-button.compact-button,
+button.mat-raised-button.compact-button {
     padding: 0px !important;
     min-width: auto !important;
     line-height: unset !important;
 }
 
-button.mat-button.no-focus .mat-button-focus-overlay {
+button.mat-button.no-focus .mat-button-focus-overlay,
+button.mat-raised-button.no-focus .mat-button-focus-overlay {
     display: none;
 }
 
-button.mat-button.icon-button /deep/ .mat-button-wrapper mat-icon {
+button.mat-button.icon-button /deep/ .mat-button-wrapper mat-icon,
+button.mat-raised-button.icon-button /deep/ .mat-button-wrapper mat-icon {
 	margin-right: 3px;
 }
 
@@ -211,4 +215,21 @@ mat-form-field.x-long-field .mat-form-field-infix {
 
 .mat-list-avatar {
 	margin-right: 10px;
+}
+
+.mat-dialog-actions {
+	padding: 30px 0 24px 0 !important;
+}
+
+w-time[timeOnly] /deep/ .w-timepicker-time-container {
+	display: none !important;
+}
+
+w-time[timeOnly] /deep/ .w-time-content > div {
+	display: none;
+}
+
+w-time[timeOnly] /deep/ .w-time {
+	min-height: unset;
+	height: unset;
 }

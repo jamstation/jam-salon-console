@@ -1,5 +1,6 @@
 import { CheckInState } from './check-in.state';
 import { CheckInActionTypes, CheckInAction } from './check-in.actions';
+import { CheckInStatuses } from '../../shared/model';
 
 const initialState: CheckInState = {
 	list: [],
@@ -28,44 +29,25 @@ export function CheckInReducer ( state = initialState, action: CheckInAction.All
 				...state,
 				processing: false,
 				loading: false,
-				list: action.list
-			};
-
-		case CheckInActionTypes.loadServiceList:
-			return {
-				...state,
-				processing: true,
-				loading: true
-			};
-
-		case CheckInActionTypes.loadServiceListSuccess:
-			return {
-				...state,
-				processing: false,
-				loading: false,
-				serviceList: action.list
-			};
-
-		case CheckInActionTypes.loadStylistList:
-			return {
-				...state,
-				processing: true,
-				loading: true
-			};
-
-		case CheckInActionTypes.loadStylistListSuccess:
-			return {
-				...state,
-				processing: false,
-				loading: false,
-				stylistList: action.list
+				list: action.list,
+				stylistList: action.stylistList,
+				serviceList: action.serviceList
 			};
 
 		case CheckInActionTypes.create:
 			return {
 				...state,
 				creating: true,
-				formItem: { key: null, token: null, time: null }
+				formItem: {
+					key: null,
+					token: null,
+					time: new Date(),
+					status: CheckInStatuses.notCheckedIn,
+					name: null,
+					phone: null,
+					serviceList: [],
+					stylist: state.stylistList[ 0 ]
+				}
 			};
 
 		case CheckInActionTypes.edit:

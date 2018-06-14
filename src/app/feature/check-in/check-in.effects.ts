@@ -23,21 +23,27 @@ export class CheckInEffects
 
 	@Effect() public load = this.actions.pipe(
 		ofType<CheckInAction.Load>( CheckInActionTypes.load ),
-		switchMap( action => this.db.list<CheckIn>( Tables.CheckIn ) ),
-		map( list => sortStringList( list, 'token' ) ),
-		map( list => new CheckInAction.LoadSuccess( list ) ) );
-
-	@Effect() public loadServiceList = this.actions.pipe(
-		ofType<CheckInAction.LoadServiceList>( CheckInActionTypes.loadServiceList ),
-		switchMap( action => this.db.list<Service>( Tables.Service ) ),
-		map( list => sortStringList( list, 'name' ) ),
-		map( list => new CheckInAction.LoadServiceListSuccess( list ) ) );
-
-	@Effect() public loadStylistList = this.actions.pipe(
-		ofType<CheckInAction.LoadStylistList>( CheckInActionTypes.loadStylistList ),
-		switchMap( action => this.db.list<Stylist>( Tables.Stylist ) ),
-		map( list => sortStringList( list, 'name' ) ),
-		map( list => new CheckInAction.LoadStylistListSuccess( list ) ) );
+		switchMap( action => this.db.filter<CheckIn>( Tables.CheckIn, 'time', '>=', Date.now() ).pipe(
+			switchMap( list => this.db.list<Stylist>( Tables.Stylist ).pipe(
+				switchMap( stylistList => this.db.list<Service>( Tables.Service ).pipe(
+					map( serviceList => ( {
+						list: list.map( item => ( {
+							...item,
+							stylist: stylistList.find( refItem => refItem.key === item.stylistKey ) || null,
+							serviceList: item.serviceKeyList.map( key => serviceList.find( refItem => refItem.key === key ) || null )
+						} ) ) as CheckIn[],
+						stylistList: stylistList.map( item => ( {
+							...item,
+							serviceList: item.serviceKeyList.map( key => serviceList.find( refItem => refItem.key === key ) || null )
+						} ) ) as Stylist[],
+						serviceList: serviceList
+					} ) ) ) ) ) ) ) ),
+		map( ( { list, stylistList, serviceList } ) => ( {
+			list: sortStringList( list, 'token' ),
+			stylistList: sortStringList( stylistList, 'name' ),
+			serviceList: sortStringList( serviceList, 'name' )
+		} ) ),
+		map( ( { list, stylistList, serviceList } ) => new CheckInAction.LoadSuccess( list, stylistList, serviceList ) ) );
 
 	@Effect() public add = this.actions.pipe(
 		ofType<CheckInAction.Add>( CheckInActionTypes.add ),
@@ -62,10 +68,15 @@ export class CheckInEffects
 
 	@Effect( { dispatch: false } ) public openDialog = this.actions.pipe(
 		ofType<CheckInAction.Edit>( CheckInActionTypes.create, CheckInActionTypes.edit ),
-		map( action => this.dialogManager.open( CheckInFormComponent, { width: '800px', id: 'CheckInFormComponent' } ) ) );
+		map( action => this.dialogManager.open( CheckInFormComponent, {
+			id: 'CheckInFormComponent',
+			width: '800px',
+			height: '650px',
+			disableClose: true
+		} ) ) );
 
 	@Effect( { dispatch: false } ) public closeDialog = this.actions.pipe(
-		ofType( CheckInActionTypes.cancelEdit, CheckInActionTypes.add, CheckInActionTypes.modify ),
+		ofType( CheckInActionTypes.cancelEdit ),
 		map( action => this.dialogManager.getDialogById( 'CheckInFormComponent' ).close() ) );
 
 }

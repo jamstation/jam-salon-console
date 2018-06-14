@@ -5,10 +5,6 @@ export const enum CheckInActionTypes
 {
 	load = '[CheckIn] load',
 	loadSuccess = '[CheckIn] loadSuccess',
-	loadServiceList = '[CheckIn] loadServiceList',
-	loadServiceListSuccess = '[CheckIn] loadServiceListSuccess',
-	loadStylistList = '[CheckIn] loadStylistList',
-	loadStylistListSuccess = '[CheckIn] loadStylistListSuccess',
 	create = '[CheckIn] create',
 	edit = '[CheckIn] edit',
 	cancelEdit = '[CheckIn] cancelEdit',
@@ -34,31 +30,7 @@ export namespace CheckInAction
 	export class LoadSuccess implements Action
 	{
 		public readonly type = CheckInActionTypes.loadSuccess;
-		constructor ( public list: CheckIn[] ) { }
-	}
-
-	export class LoadServiceList implements Action
-	{
-		public readonly type = CheckInActionTypes.loadServiceList;
-		constructor () { }
-	}
-
-	export class LoadServiceListSuccess implements Action
-	{
-		public readonly type = CheckInActionTypes.loadServiceListSuccess;
-		constructor ( public list: Service[] ) { }
-	}
-
-	export class LoadStylistList implements Action
-	{
-		public readonly type = CheckInActionTypes.loadStylistList;
-		constructor () { }
-	}
-
-	export class LoadStylistListSuccess implements Action
-	{
-		public readonly type = CheckInActionTypes.loadStylistListSuccess;
-		constructor ( public list: Stylist[] ) { }
+		constructor ( public list: CheckIn[], public stylistList: Stylist[], public serviceList: Service[] ) { }
 	}
 
 	export class Create implements Action
@@ -136,10 +108,6 @@ export namespace CheckInAction
 	export type All
 		= Load
 		| LoadSuccess
-		| LoadServiceList
-		| LoadServiceListSuccess
-		| LoadStylistList
-		| LoadStylistListSuccess
 		| Create
 		| Edit
 		| CancelEdit

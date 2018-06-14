@@ -15,6 +15,7 @@ export * from './filter-out-object-by-value.function';
 export * from './flatten-tree.function';
 export * from './intersect-lists.function';
 export * from './intersect-unique-lists.function';
+export * from './is-today.function';
 export * from './mat-display-fn.function';
 export * from './merge-observables.function';
 export * from './minus-list.function';

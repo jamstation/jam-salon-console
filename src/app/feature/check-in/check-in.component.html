@@ -1,15 +1,6 @@
 <jam-window title="Queue"
 	titleIcon="people">
 
-	<div header-template class="flex flex-start-center">
-		<button mat-raised-button
-			color="accent"
-			(click)="create()">
-			<mat-icon> add </mat-icon>
-			<span> Check in </span>
-		</button>
-	</div>
-
 	<div content-template
 		class="content stretch-horizontally flex-vertical flex-start-center">
 
@@ -17,6 +8,7 @@
 			<mat-list-item *ngFor="let checkIn of ( list | async )"
 				class="check=in-list-item"
 				(click)="edit( checkIn )">
+				<div matListAvatar class="token"> {{ checkIn.token }} </div>
 				<h4 mat-line> {{ checkIn.name }} </h4>
 				<button mat-icon-button class="remove-button"
 					(click)="remove( checkIn ); $event.stopPropagation();">
@@ -29,6 +21,11 @@
 
 	<div footer-template
 		class="footer stretch-horizontally">
+		<button mat-fab
+			class="add-button absolute"
+			(click)="create()">
+			<mat-icon> add </mat-icon>
+		</button>
 	</div>
 
 </jam-window>

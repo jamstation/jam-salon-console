@@ -47,7 +47,12 @@ jam-window {
 }
 
 .footer {
-	height: 50px;
+	min-height: 50px;
+}
+
+.add-button {
+	right: 30px;
+	bottom: 30px;
 }
 
 @media ( max-width: 576px ) {

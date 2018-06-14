@@ -50,7 +50,6 @@ export class StylistFormComponent implements AfterViewInit
 
 	public ngAfterViewInit (): void
 	{
-		console.log( this.serviceListViewChild.options );
 		this.serviceList.subscribe( list => this.serviceListViewChild.options
 			.filter( item => !!this.formItem.serviceList.find( refItem => item.value.key === refItem.key ) )
 			.forEach( item => this.serviceListViewChild.selectedOptions.select( item ) ) );

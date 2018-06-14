@@ -17,7 +17,6 @@ export class CheckInComponent
 
 	constructor ( private store: Store<CheckInModuleState> )
 	{
-
 		/**
 		 * Store Selects
 		 */
@@ -27,8 +26,6 @@ export class CheckInComponent
 		 * Store Dispatches
 		 */
 		this.store.dispatch( new CheckInAction.Load() );
-		this.store.dispatch( new CheckInAction.LoadServiceList() );
-		this.store.dispatch( new CheckInAction.LoadStylistList() );
 	}
 
 	public create (): void
