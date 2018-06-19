@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "jam-salon": {
+    "jam-salon-console": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -56,18 +56,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "jam-salon:build"
+            "browserTarget": "jam-salon-console:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "jam-salon:build:production"
+              "browserTarget": "jam-salon-console:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "jam-salon:build"
+            "browserTarget": "jam-salon-console:build"
           }
         },
         "test": {
@@ -109,7 +109,7 @@
         }
       }
     },
-    "jam-salon-e2e": {
+    "jam-salon-console-e2e": {
       "root": "",
       "sourceRoot": "",
       "projectType": "application",
@@ -118,7 +118,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "jam-salon:serve"
+            "devServerTarget": "jam-salon-console:serve"
           }
         },
         "lint": {
@@ -135,7 +135,7 @@
       }
     }
   },
-  "defaultProject": "jam-salon",
+  "defaultProject": "jam-salon-console",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",
