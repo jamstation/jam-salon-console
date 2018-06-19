@@ -6,14 +6,27 @@
 
 		<mat-list class="check-in-list stretch-horizontally">
 			<mat-list-item *ngFor="let checkIn of ( list | async )"
-				class="check=in-list-item"
+				class="check-in-list-item"
+				[ngClass]="{ 'in-progress-item': checkIn.status === 'In Progress',
+					'completed-item': checkIn.status !== 'In Progress' && checkIn.status !== 'Checked In' }"
 				(click)="edit( checkIn )">
-				<div matListAvatar class="token"> {{ checkIn.token }} </div>
+				<div matListAvatar class="check-in-list-item-avatar flex-center-center">
+					<mat-icon> person </mat-icon>
+				</div>
 				<h4 mat-line> {{ checkIn.name }} </h4>
-				<button mat-icon-button class="remove-button"
-					(click)="remove( checkIn ); $event.stopPropagation();">
-					<mat-icon mat-list-icon> delete </mat-icon>
+				<span mat-line class="token x-small-text"> {{ checkIn.token }} </span>
+				<button mat-button
+					class="status-button"
+					[matMenuTriggerFor]="menu"
+					(click)="$event.stopPropagation()">
+					{{ checkIn.status }}
 				</button>
+				<mat-menu #menu>
+					<button mat-menu-item *ngFor="let status of statuses"
+						(click)="changeStatus( checkIn, status )">
+						{{ status }}
+					</button>
+				</mat-menu>
 			</mat-list-item>
 		</mat-list>
 
@@ -23,6 +36,7 @@
 		class="footer stretch-horizontally">
 		<button mat-fab
 			class="add-button absolute"
+			type="button"
 			(click)="create()">
 			<mat-icon> add </mat-icon>
 		</button>

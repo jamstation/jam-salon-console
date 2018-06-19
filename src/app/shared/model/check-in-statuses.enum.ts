@@ -1,4 +1,4 @@
-export const enum CheckInStatuses
+export enum CheckInStatuses
 {
 	notCheckedIn = 'Not Checked In',
 	checkedIn = 'Checked In',

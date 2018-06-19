@@ -10,8 +10,6 @@ export interface CheckIn extends TableData
 	status: CheckInStatuses;
 	name?: string;
 	phone?: string;
-	serviceKeyList?: string[];
-	stylistKey?: string;
 	serviceList?: Service[];
 	stylist?: Stylist;
 }

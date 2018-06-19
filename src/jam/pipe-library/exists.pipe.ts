@@ -6,7 +6,6 @@ export class ExistsPipe implements PipeTransform
 
 	public transform ( value: any, list: any[] ): boolean
 	{
-		console.log( value, list, list.includes( value ) );
 		return list.includes( value );
 	}
 

@@ -1,11 +1,14 @@
 import { CheckInState } from './check-in.state';
 import { CheckInActionTypes, CheckInAction } from './check-in.actions';
 import { CheckInStatuses } from '../../shared/model';
+import { sum } from '../../../jam/function-library';
 
 const initialState: CheckInState = {
 	list: [],
 	serviceList: [],
 	stylistList: [],
+	queueLength: 0,
+	waitTime: 0,
 	processing: false,
 	loading: false,
 	creating: false,
@@ -63,10 +66,21 @@ export function CheckInReducer ( state = initialState, action: CheckInAction.All
 				editing: false
 			};
 
-		case CheckInActionTypes.addSuccess:
+		case CheckInActionTypes.add:
 			return {
 				...state,
-				creating: false
+				formItem: action.item
+			};
+
+		case CheckInActionTypes.addSuccess:
+			const currentQueue = state.list
+				.filter( item => item.status === CheckInStatuses.checkedIn || CheckInStatuses.inProgress )
+				.filter( item => !state.formItem || item.key !== state.formItem.key );
+			return {
+				...state,
+				creating: false,
+				queueLength: currentQueue.length,
+				waitTime: sum( ...currentQueue.map( item => sum( ...item.serviceList.map( sItem => sItem.duration ) ) ) )
 			};
 
 		case CheckInActionTypes.modifySuccess:

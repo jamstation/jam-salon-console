@@ -11,6 +11,8 @@ export interface CheckInState
 	list: CheckIn[];
 	serviceList: Service[];
 	stylistList: Stylist[];
+	queueLength: number;
+	waitTime: number;
 
 	processing: boolean;
 	loading: boolean;

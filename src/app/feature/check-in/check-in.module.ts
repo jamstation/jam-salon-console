@@ -20,16 +20,23 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
 import { JamWindowModule } from '../../../jam/ui-library';
+import { ExistsPipeModule, MapPipeModule, TimePipeModule, NthPipeModule } from '../../../jam/pipe-library';
 
 import { routes } from './check-in.routes';
 import { CheckInReducer } from './check-in.reducer';
 import { CheckInEffects } from './check-in.effects';
 import { CheckInComponent } from './check-in.component';
 import { CheckInFormComponent } from './check-in-form.component';
-import { ExistsPipeModule } from '../../../jam/pipe-library';
+import { AppointmentFormComponent } from './appointment-form.component';
+import { CheckInSummaryDialogComponent } from './check-in-summary-dialog.component';
 
 @NgModule( {
-	declarations: [ CheckInComponent, CheckInFormComponent ],
+	declarations: [
+		CheckInComponent,
+		CheckInFormComponent,
+		AppointmentFormComponent,
+		CheckInSummaryDialogComponent
+	],
 	imports: [
 		CommonModule,
 		ReactiveFormsModule,
@@ -48,8 +55,15 @@ import { ExistsPipeModule } from '../../../jam/pipe-library';
 		StoreModule.forFeature( 'checkInState', CheckInReducer ),
 		EffectsModule.forFeature( [ CheckInEffects ] ),
 		JamWindowModule,
-		ExistsPipeModule
+		ExistsPipeModule,
+		MapPipeModule,
+		TimePipeModule,
+		NthPipeModule
 	],
-	entryComponents: [ CheckInFormComponent ]
+	entryComponents: [
+		CheckInFormComponent,
+		AppointmentFormComponent,
+		CheckInSummaryDialogComponent
+	]
 } )
 export class CheckInModule { }

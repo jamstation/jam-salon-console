@@ -60,7 +60,7 @@ export class StylistFormComponent implements AfterViewInit
 		this.formItem = {
 			...this.formItem,
 			name: this.form.get( 'name' ).value as string,
-			serviceKeyList: this.serviceListViewChild.selectedOptions.selected.map( item => item.value.key as string )
+			serviceList: this.serviceListViewChild.selectedOptions.selected.map( item => item.value )
 		};
 
 		this.creating

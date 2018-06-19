@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { CheckIn, Service, Stylist } from '../../shared/model';
+import { CheckIn, Service, Stylist, CheckInStatuses } from '../../shared/model';
 
 export const enum CheckInActionTypes
 {
@@ -16,7 +16,12 @@ export const enum CheckInActionTypes
 	modifyFailed = '[CheckIn] modifyFailed',
 	remove = '[CheckIn] remove',
 	removeSuccess = '[CheckIn] removeSuccess',
-	removeFailed = '[CheckIn] removeFailed'
+	removeFailed = '[CheckIn] removeFailed',
+	openSummaryDialog = '[CheckIn] openSummaryDialog',
+	closeSummaryDialog = '[CheckIn] closeSummaryDialog',
+	changeStatus = '[CheckIn] changeStatus',
+	changeStatusSuccess = '[CheckIn] changeStatusSuccess',
+	changeStatusFailed = '[CheckIn] changeStatusFailed'
 }
 
 export namespace CheckInAction
@@ -105,6 +110,36 @@ export namespace CheckInAction
 		constructor () { }
 	}
 
+	export class OpenSummaryDialog implements Action
+	{
+		public readonly type = CheckInActionTypes.openSummaryDialog;
+		constructor () { }
+	}
+
+	export class CloseSummaryDialog implements Action
+	{
+		public readonly type = CheckInActionTypes.closeSummaryDialog;
+		constructor () { }
+	}
+
+	export class ChangeStatus implements Action
+	{
+		public readonly type = CheckInActionTypes.changeStatus;
+		constructor ( public checkIn: CheckIn, public status: CheckInStatuses ) { }
+	}
+
+	export class ChangeStatusSuccess implements Action
+	{
+		public readonly type = CheckInActionTypes.changeStatusSuccess;
+		constructor ( public key: string ) { }
+	}
+
+	export class ChangeStatusFailed implements Action
+	{
+		public readonly type = CheckInActionTypes.changeStatusFailed;
+		constructor () { }
+	}
+
 	export type All
 		= Load
 		| LoadSuccess
@@ -120,5 +155,10 @@ export namespace CheckInAction
 		| Remove
 		| RemoveSuccess
 		| RemoveFailed
+		| OpenSummaryDialog
+		| CloseSummaryDialog
+		| ChangeStatus
+		| ChangeStatusSuccess
+		| ChangeStatusFailed
 		;
 }

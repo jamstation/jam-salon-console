@@ -13,6 +13,8 @@ export * from './filter-object-by-value.function';
 export * from './filter-object.function';
 export * from './filter-out-object-by-value.function';
 export * from './flatten-tree.function';
+export * from './get-caller.function';
+export * from './get-today.function';
 export * from './intersect-lists.function';
 export * from './intersect-unique-lists.function';
 export * from './is-today.function';

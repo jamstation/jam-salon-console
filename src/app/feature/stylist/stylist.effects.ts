@@ -30,7 +30,7 @@ export class StylistEffects
 						...item,
 						serviceList: item.serviceKeyList.map( key => serviceList.find( refItem => refItem.key === key ) || null )
 					} ) ) as Stylist[],
-					serviceList: serviceList
+					serviceList
 				} ) ) ) ) ) ),
 		map( ( { list, serviceList } ) => ( {
 			list: sortStringList( list, 'name' ),
